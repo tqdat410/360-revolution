@@ -115,34 +115,39 @@
         }
       }
 
-      /* Reset Button cho mobile */
-      #resetButton {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        background: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        z-index: 1000;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-      }
-
-      #resetButton:hover {
-        background: rgba(0, 0, 0, 0.9);
-        transform: scale(1.05);
-      }
-
-      @media screen and (max-width: 768px) {
-        #resetButton {
-          top: 15px;
-          left: 15px;
-          font-size: 12px;
-          padding: 6px 10px;
+      /* Responsive cho màn hình điện thoại nằm ngang */
+      @media screen and (max-height: 500px) and (orientation: landscape) {
+        #infoPanel {
+          top: 5px;
+          right: 5px;
+          left: 5px;
+          width: auto;
+          max-height: 70vh;
+          padding: 8px 12px;
+          font-size: 11px;
+        }
+        #infoPanel h3 {
+          font-size: 13px;
+          margin-top: 0;
+          margin-bottom: 6px;
+        }
+        #infoPanel p {
+          font-size: 10px;
+          line-height: 1.3;
+          margin-bottom: 0;
+        }
+        #closeBtn {
+          font-size: 16px;
+          top: 4px;
+          right: 8px;
+          padding: 2px;
+        }
+        #instructions {
+          bottom: 8px;
+          left: 8px;
+          right: 8px;
+          padding: 6px 8px;
+          font-size: 10px;
         }
       }
     </style>
@@ -156,9 +161,6 @@
 
     <!-- Hướng dẫn -->
     <div id="instructions">💡 Ấn vào các nút để xem thông tin</div>
-
-    <!-- Nút Reset hướng nhìn cho mobile -->
-    <div id="resetButton" style="display: none">🧭 Reset hướng nhìn</div>
 
     <a-scene>
       <!-- Ảnh 360° đặt làm skybox -->
@@ -499,22 +501,8 @@
           }
         });
 
-        // Hiển thị nút reset cho mobile và tự động ẩn instructions
+        // Tự động ẩn instructions trên mobile
         if (window.innerWidth <= 768) {
-          // Hiển thị nút reset cho mobile
-          const resetButton = document.getElementById("resetButton");
-          if (resetButton) {
-            resetButton.style.display = "block";
-            resetButton.addEventListener("click", resetCameraOrientation);
-
-            // Tự động ẩn nút reset sau 8 giây
-            setTimeout(() => {
-              resetButton.style.opacity = "0.6";
-              resetButton.style.transform = "scale(0.9)";
-              resetButton.style.transition = "all 0.3s ease";
-            }, 8000);
-          }
-
           setTimeout(() => {
             const instructions = document.getElementById("instructions");
             if (instructions) {
@@ -587,40 +575,6 @@
         setTimeout(() => {
           panel.style.display = "none";
         }, 300);
-      }
-
-      // Function để reset camera orientation
-      function resetCameraOrientation() {
-        const camera = document.querySelector("[camera]");
-        if (camera) {
-          // Reset rotation trực tiếp mà không tắt cảm biến
-          camera.setAttribute("rotation", "0 -180 0");
-
-          // Reset qua THREE.js object nếu có thể
-          if (camera.object3D) {
-            camera.object3D.rotation.set(0, THREE.Math.degToRad(-180), 0);
-          }
-
-          // Reset qua look-controls component nếu có thể
-          if (camera.components && camera.components["look-controls"]) {
-            const lookControls = camera.components["look-controls"];
-            if (lookControls.pitchObject && lookControls.yawObject) {
-              lookControls.pitchObject.rotation.x = 0;
-              lookControls.yawObject.rotation.y = THREE.Math.degToRad(-180);
-            }
-          }
-
-          // Hiệu ứng feedback cho user
-          const resetButton = document.getElementById("resetButton");
-          if (resetButton) {
-            resetButton.style.background = "rgba(76, 175, 80, 0.8)";
-            resetButton.innerHTML = "✅ Đã reset!";
-            setTimeout(() => {
-              resetButton.style.background = "rgba(0, 0, 0, 0.8)";
-              resetButton.innerHTML = "🧭 Reset hướng nhìn";
-            }, 1500);
-          }
-        }
       }
     </script>
   </body>
