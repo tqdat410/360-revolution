@@ -114,6 +114,37 @@
           font-size: 11px;
         }
       }
+
+      /* Reset Button cho mobile */
+      #resetButton {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        z-index: 1000;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      #resetButton:hover {
+        background: rgba(0, 0, 0, 0.9);
+        transform: scale(1.05);
+      }
+
+      @media screen and (max-width: 768px) {
+        #resetButton {
+          top: 15px;
+          left: 15px;
+          font-size: 12px;
+          padding: 6px 10px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -125,6 +156,9 @@
 
     <!-- Hướng dẫn -->
     <div id="instructions">💡 Ấn vào các nút để xem thông tin</div>
+
+    <!-- Nút Reset hướng nhìn cho mobile -->
+    <div id="resetButton" style="display: none">🧭 Reset hướng nhìn</div>
 
     <a-scene>
       <!-- Ảnh 360° đặt làm skybox -->
@@ -300,9 +334,7 @@
         if (camera) {
           // Force reset camera rotation on mobile
           if (window.innerWidth <= 768) {
-            camera.setAttribute("rotation", "0 -180 0");
-
-            // Ensure look-controls is properly initialized for mobile
+            // Disable device orientation initially to set fixed starting position
             camera.setAttribute("look-controls", {
               enabled: true,
               touchEnabled: true,
@@ -312,14 +344,38 @@
               reverseTouchDrag: false,
               minVerticalLook: -60,
               maxVerticalLook: 60,
-              magicWindowTrackingEnabled: true,
+              magicWindowTrackingEnabled: false, // Tắt cảm biến ban đầu
             });
 
-            // Force camera position
+            // Set fixed initial rotation
+            camera.setAttribute("rotation", "0 -180 0");
+
+            // After a delay, enable device orientation tracking
+            setTimeout(() => {
+              camera.setAttribute("look-controls", {
+                enabled: true,
+                touchEnabled: true,
+                mouseEnabled: true,
+                pointerLockEnabled: false,
+                reverseMouseDrag: false,
+                reverseTouchDrag: false,
+                minVerticalLook: -60,
+                maxVerticalLook: 60,
+                magicWindowTrackingEnabled: true, // Bật lại cảm biến sau khi đã set vị trí
+              });
+            }, 1500);
+
+            // Force camera position multiple times to ensure it sticks
             setTimeout(() => {
               camera.setAttribute("rotation", "0 -180 0");
-              camera.object3D.rotation.set(0, THREE.Math.degToRad(-180), 0);
+              if (camera.object3D) {
+                camera.object3D.rotation.set(0, THREE.Math.degToRad(-180), 0);
+              }
             }, 500);
+
+            setTimeout(() => {
+              camera.setAttribute("rotation", "0 -180 0");
+            }, 1000);
           }
         }
       }
@@ -443,8 +499,22 @@
           }
         });
 
-        // Tự động ẩn instructions trên mobile sau 5 giây
+        // Hiển thị nút reset cho mobile và tự động ẩn instructions
         if (window.innerWidth <= 768) {
+          // Hiển thị nút reset cho mobile
+          const resetButton = document.getElementById("resetButton");
+          if (resetButton) {
+            resetButton.style.display = "block";
+            resetButton.addEventListener("click", resetCameraOrientation);
+
+            // Tự động ẩn nút reset sau 8 giây
+            setTimeout(() => {
+              resetButton.style.opacity = "0.6";
+              resetButton.style.transform = "scale(0.9)";
+              resetButton.style.transition = "all 0.3s ease";
+            }, 8000);
+          }
+
           setTimeout(() => {
             const instructions = document.getElementById("instructions");
             if (instructions) {
@@ -517,6 +587,57 @@
         setTimeout(() => {
           panel.style.display = "none";
         }, 300);
+      }
+
+      // Function để reset camera orientation
+      function resetCameraOrientation() {
+        const camera = document.querySelector("[camera]");
+        if (camera) {
+          // Tạm thời tắt device orientation
+          camera.setAttribute("look-controls", {
+            enabled: true,
+            touchEnabled: true,
+            mouseEnabled: true,
+            pointerLockEnabled: false,
+            reverseMouseDrag: false,
+            reverseTouchDrag: false,
+            minVerticalLook: -60,
+            maxVerticalLook: 60,
+            magicWindowTrackingEnabled: false,
+          });
+
+          // Reset về vị trí mặc định
+          camera.setAttribute("rotation", "0 -180 0");
+          if (camera.object3D) {
+            camera.object3D.rotation.set(0, THREE.Math.degToRad(-180), 0);
+          }
+
+          // Bật lại device orientation sau 500ms
+          setTimeout(() => {
+            camera.setAttribute("look-controls", {
+              enabled: true,
+              touchEnabled: true,
+              mouseEnabled: true,
+              pointerLockEnabled: false,
+              reverseMouseDrag: false,
+              reverseTouchDrag: false,
+              minVerticalLook: -60,
+              maxVerticalLook: 60,
+              magicWindowTrackingEnabled: true,
+            });
+          }, 500);
+
+          // Hiệu ứng feedback cho user
+          const resetButton = document.getElementById("resetButton");
+          if (resetButton) {
+            resetButton.style.background = "rgba(76, 175, 80, 0.8)";
+            resetButton.innerHTML = "✅ Đã reset!";
+            setTimeout(() => {
+              resetButton.style.background = "rgba(0, 0, 0, 0.8)";
+              resetButton.innerHTML = "🧭 Reset hướng nhìn";
+            }, 1500);
+          }
+        }
       }
     </script>
   </body>
