@@ -163,7 +163,7 @@
     <a-scene>
       <!-- Ảnh 360° đặt làm skybox -->
       <a-sky
-        src="https://res.cloudinary.com/do6szo7zy/image/upload/v1758808227/ssd_final_4_r8k0oh.png"
+        src="https://res.cloudinary.com/do6szo7zy/image/upload/v1758818587/ssd_final_8_cbidgr.png"
         rotation="0 120 0"
       ></a-sky>
 
@@ -593,39 +593,22 @@
       function resetCameraOrientation() {
         const camera = document.querySelector("[camera]");
         if (camera) {
-          // Tạm thời tắt device orientation
-          camera.setAttribute("look-controls", {
-            enabled: true,
-            touchEnabled: true,
-            mouseEnabled: true,
-            pointerLockEnabled: false,
-            reverseMouseDrag: false,
-            reverseTouchDrag: false,
-            minVerticalLook: -60,
-            maxVerticalLook: 60,
-            magicWindowTrackingEnabled: false,
-          });
-
-          // Reset về vị trí mặc định
+          // Reset rotation trực tiếp mà không tắt cảm biến
           camera.setAttribute("rotation", "0 -180 0");
+
+          // Reset qua THREE.js object nếu có thể
           if (camera.object3D) {
             camera.object3D.rotation.set(0, THREE.Math.degToRad(-180), 0);
           }
 
-          // Bật lại device orientation sau 500ms
-          setTimeout(() => {
-            camera.setAttribute("look-controls", {
-              enabled: true,
-              touchEnabled: true,
-              mouseEnabled: true,
-              pointerLockEnabled: false,
-              reverseMouseDrag: false,
-              reverseTouchDrag: false,
-              minVerticalLook: -60,
-              maxVerticalLook: 60,
-              magicWindowTrackingEnabled: true,
-            });
-          }, 500);
+          // Reset qua look-controls component nếu có thể
+          if (camera.components && camera.components["look-controls"]) {
+            const lookControls = camera.components["look-controls"];
+            if (lookControls.pitchObject && lookControls.yawObject) {
+              lookControls.pitchObject.rotation.x = 0;
+              lookControls.yawObject.rotation.y = THREE.Math.degToRad(-180);
+            }
+          }
 
           // Hiệu ứng feedback cho user
           const resetButton = document.getElementById("resetButton");
