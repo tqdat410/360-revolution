@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Cách Mạng Công Nghiệp - Trải Nghiệm 360°</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <style>
+      #infoPanel {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        max-height: 400px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+        display: none;
+        z-index: 1000;
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      #infoPanel h3 {
+        margin-top: 0;
+        color: #4caf50;
+        font-size: 18px;
+      }
+      #infoPanel p {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      #closeBtn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px;
+      }
+      #instructions {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Responsive cho mobile */
+      @media screen and (max-width: 768px) {
+        #infoPanel {
+          top: 10px;
+          right: 10px;
+          left: 10px;
+          width: auto;
+          max-height: 50vh;
+          padding: 15px;
+        }
+        #infoPanel h3 {
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+        #infoPanel p {
+          font-size: 13px;
+          line-height: 1.4;
+        }
+        #closeBtn {
+          font-size: 20px;
+          top: 8px;
+          right: 12px;
+        }
+        #instructions {
+          bottom: 15px;
+          left: 15px;
+          right: 15px;
+          text-align: center;
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        #infoPanel {
+          top: 5px;
+          right: 5px;
+          left: 5px;
+          max-height: 45vh;
+          padding: 12px;
+        }
+        #infoPanel h3 {
+          font-size: 15px;
+        }
+        #infoPanel p {
+          font-size: 12px;
+        }
+        #instructions {
+          bottom: 10px;
+          left: 10px;
+          right: 10px;
+          padding: 10px 10px;
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Panel thông tin -->
+    <div id="infoPanel">
+      <button id="closeBtn" onclick="closeInfo()">&times;</button>
+      <div id="infoContent"></div>
+    </div>
+
+    <!-- Hướng dẫn -->
+    <div id="instructions">💡 Ấn vào các nút để xem thông tin</div>
+
+    <a-scene>
+      <!-- Ảnh 360° đặt làm skybox -->
+      <a-sky
+        src="https://res.cloudinary.com/do6szo7zy/image/upload/v1758808227/ssd_final_4_r8k0oh.png"
+        rotation="0 120 0"
+      ></a-sky>
+
+      <!-- Giai đoạn 1: Thời kỳ Sơ khai (0°) -->
+      <a-sphere
+        id="hotspot1-1"
+        position="0 5.5 -15"
+        radius="0.5"
+        color="#FF6B6B"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "Thời Kỳ Sơ Khai - Triết Học", "content": "1. Triết học giai đoạn này vẫn mang tính tôn giáo và thần học (Kitô giáo ở châu Âu, Nho giáo ở phương Đông).<br><br>2. Triết học Hy Lạp – La Mã cổ đại (Plato, Aristotle) vẫn còn ảnh hưởng.<br><br>3. Chủ yếu bàn về tôn giáo, đạo đức, trật tự xã hội.<br><br>4. Con người sống hòa hợp với thiên nhiên, tin vào số phận và thần linh."}'
+      ></a-sphere>
+
+      <a-sphere
+        id="hotspot1-2"
+        position="0 -2 -15"
+        radius="0.5"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "Thời Kỳ Sơ Khai - Sản Xuất", "content": "1. Nền sản xuất chủ yếu dựa vào nông nghiệp và thủ công nghiệp.<br><br>2. Xã hội theo mô hình phong kiến, tự cung tự cấp, sản xuất quy mô nhỏ.<br><br>3. Công cụ lao động còn thô sơ (cuốc, cày, rìu, búa)."}'
+      ></a-sphere>
+
+      <!-- Giai đoạn 2: Cách mạng Công nghiệp 1.0 (30°) -->
+      <a-sphere
+        id="hotspot2-1"
+        position="25 9.5 -15"
+        radius="0.9"
+        color="#FF6B6B"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 1.0 - Triết Học", "content": "1. Thời kỳ Khai sáng (Enlightenment) – niềm tin vào lý trí và tiến bộ khoa học.<br><br>2. Triết gia tiêu biểu: John Locke, Montesquieu, Rousseau, Voltaire.<br><br>3. Sự kiện nổi bật: Cách mạng tư sản Anh (1640), Cách mạng Pháp (1789) → thúc đẩy tư tưởng tự do, dân chủ, nhân quyền."}'
+      ></a-sphere>
+      <a-sphere
+        id="hotspot2-2"
+        position="25 -5 -15"
+        radius="0.9"
+        color="#6EDDD6"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 1.0 - Sản Xuất", "content": "1. Ra đời máy hơi nước (James Watt).<br><br>2. Chuyển từ sản xuất thủ công sang cơ khí hóa.<br><br>3. Sự ra đời của nhà máy, xưởng cơ khí, ngành dệt may, khai thác than đá.<br><br>4. Xã hội bắt đầu hình thành giai cấp công nhân và tư sản."}'
+      ></a-sphere>
+
+      <!-- Giai đoạn 3: Cách mạng Công nghiệp 2.0 (60°) -->
+      <a-sphere
+        id="hotspot3-1"
+        position="25 9.5 16"
+        radius="0.9"
+        color="#FF6B6B"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 2.0 - Triết Học", "content": "1. Chủ nghĩa tích cực (Positivism) của Auguste Comte → coi khoa học là nền tảng tiến bộ xã hội.<br><br>2. Triết học Mác – Lênin ra đời (Karl Marx, Friedrich Engels) → phê phán CNTB, đưa ra học thuyết duy vật biện chứng và duy vật lịch sử.<br><br>3. Phong trào công nhân, Quốc tế Cộng sản hình thành."}'
+      ></a-sphere>
+      <a-sphere
+        id="hotspot3-2"
+        position="25 -5 16"
+        radius="0.9"
+        color="#67C3DD"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 2.0 - Sản Xuất", "content": "1. Sự xuất hiện của điện, động cơ đốt trong, dây chuyền sản xuất hàng loạt (Henry Ford).<br><br>2. Phát triển ngành thép, hóa chất, viễn thông.<br><br>3. Đẩy mạnh sản xuất hàng loạt, tiêu chuẩn hóa."}'
+      ></a-sphere>
+
+      <!-- Giai đoạn 4: Cách mạng Công nghiệp 3.0 (90°) -->
+      <a-sphere
+        id="hotspot4-1"
+        position="0 5.5 15"
+        radius="0.5"
+        color="#FF6B6B"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 3.0 - Triết Học", "content": "1. Triết học hiện sinh (Existentialism) (Jean-Paul Sartre, Martin Heidegger): bàn về sự hiện hữu và tự do cá nhân.<br><br>2. Chủ nghĩa cấu trúc và hậu cấu trúc (Michel Foucault, Jacques Derrida).<br><br>3. Triết học khoa học phát triển: Karl Popper (phản bác tính tuyệt đối của khoa học), Thomas Kuhn (các cách mạng khoa học).<br><br>4. Sự kiện: Chiến tranh Lạnh, chạy đua công nghệ vũ trụ."}'
+      ></a-sphere>
+      <a-sphere
+        id="hotspot4-2"
+        position="0 -2 15"
+        radius="0.5"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 3.0 - Sản Xuất", "content": "1. Xuất hiện máy tính, robot công nghiệp, internet, công nghệ bán dẫn.<br><br>2. Tự động hóa sản xuất, điều khiển số (NC, CNC).<br><br>3. Xã hội chuyển sang kỷ nguyên thông tin."}'
+      ></a-sphere>
+
+      <!-- Giai đoạn 5: Cách mạng Công nghiệp 4.0 (120°) -->
+      <a-sphere
+        id="hotspot5-1"
+        position="-29 10 15"
+        radius="1"
+        color="#FF6B6B"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 4.0 - Triết Học", "content": "1. Xuất hiện triết học hậu nhân loại (Posthumanism) – bàn về vai trò con người trong thế giới công nghệ.<br><br>2. Triết học công nghệ: bàn về đạo đức AI, quyền riêng tư, dữ liệu.<br><br>3. Nhà tư tưởng tiêu biểu: Nick Bostrom (triết học AI, siêu trí tuệ).<br><br>4. Sự kiện: bùng nổ mạng xã hội, kinh tế số, tranh luận về AI Ethics."}'
+      ></a-sphere>
+      <a-sphere
+        id="hotspot5-2"
+        position="-29 -6 15"
+        radius="1"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 4.0 - Sản Xuất", "content": "1. Internet vạn vật (IoT), Big Data, Cloud computing.<br><br>2. Nhà máy thông minh, kết nối mọi thứ trong hệ sinh thái số.<br><br>3. Cá nhân hóa sản xuất, dịch vụ số, công nghệ sinh học phát triển."}'
+      ></a-sphere>
+
+      <!-- Giai đoạn 6: Kỷ nguyên AI (150°) -->
+      <a-sphere
+        id="hotspot6-1"
+        position="-20 7.5 -11.5"
+        radius="0.8"
+        color="#FF6B6B"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "Kỷ Nguyên AI - Triết Học", "content": "1. Triết học AI: bàn về ý thức máy móc, “AI có linh hồn hay không?”.<br><br>2. Chủ nghĩa hậu nhân loại (Transhumanism): con người và máy hòa nhập.<br><br>3. Triết gia & nhà tư tưởng: Ray Kurzweil (singularity), Yuval Noah Harari (Homo Deus).<br><br>4. Sự kiện nổi bật tương lai: AI đạt siêu trí tuệ, tranh luận về quyền của robot, quan hệ người – máy."}'
+      ></a-sphere>
+      <a-sphere
+        id="hotspot6-2"
+        position="-20 -3.5 -11.5"
+        radius="0.8"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "Kỷ Nguyên AI - Sản Xuất", "content": "1. Trí tuệ nhân tạo tổng quát (AGI), robot có khả năng học hỏi, sáng tạo.<br><br>2. Xã hội hậu công nghiệp, có thể áp dụng UBI (thu nhập cơ bản phổ quát).<br><br>3. Con người tập trung vào sáng tạo, phát triển tinh thần và tri thức."}'
+      ></a-sphere>
+
+      <!-- Camera với cursor để click -->
+      <a-entity
+        camera
+        look-controls="enabled: true; minVerticalLook: -60; maxVerticalLook: 60; touchEnabled: true; magicWindowTrackingEnabled: false"
+        wasd-controls="enabled: false"
+        rotation="0 -180 0"
+        position="0 1.6 0"
+      >
+        <a-entity
+          cursor="fuse: true; fuseTimeout: 1500"
+          position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+          material="color: white; shader: flat"
+          raycaster="objects: .clickable; far: 50"
+        >
+        </a-entity>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      // Đợi A-Frame load xong
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          setupInteractions();
+          setupMobileCamera();
+        }, 1000);
+      });
+
+      function setupMobileCamera() {
+        const camera = document.querySelector("[camera]");
+
+        if (camera) {
+          // Force reset camera rotation on mobile
+          if (window.innerWidth <= 768) {
+            camera.setAttribute("rotation", "0 -180 0");
+
+            // Ensure look-controls is properly initialized for mobile
+            camera.setAttribute("look-controls", {
+              enabled: true,
+              touchEnabled: true,
+              mouseEnabled: true,
+              pointerLockEnabled: false,
+              reverseMouseDrag: false,
+              reverseTouchDrag: false,
+              minVerticalLook: -60,
+              maxVerticalLook: 60,
+              magicWindowTrackingEnabled: false,
+            });
+
+            // Force camera position
+            setTimeout(() => {
+              camera.setAttribute("rotation", "0 -180 0");
+              camera.object3D.rotation.set(0, THREE.Math.degToRad(-180), 0);
+            }, 500);
+          }
+        }
+      }
+
+      function setupInteractions() {
+        // Xử lý click vào hotspot
+        document.querySelectorAll(".hotspot").forEach((hotspot) => {
+          hotspot.addEventListener("click", function () {
+            const info = JSON.parse(this.getAttribute("data-info"));
+            showInfo(info.title, info.content);
+          });
+
+          // Xử lý fuse (mobile - nhìn lâu vào điểm)
+          hotspot.addEventListener("fusing", function () {
+            this.setAttribute("scale", "1.3 1.3 1.3");
+          });
+
+          hotspot.addEventListener("fused", function () {
+            const info = JSON.parse(this.getAttribute("data-info"));
+            showInfo(info.title, info.content);
+            this.setAttribute("scale", "1 1 1");
+          });
+
+          // Hiệu ứng hover
+          hotspot.addEventListener("mouseenter", function () {
+            this.setAttribute("scale", "1.2 1.2 1.2");
+          });
+
+          hotspot.addEventListener("mouseleave", function () {
+            this.setAttribute("scale", "1 1 1");
+          });
+        });
+
+        // Thêm tương tác click trực tiếp không cần cursor
+        const scene = document.querySelector("a-scene");
+
+        // Click trực tiếp cho desktop
+        scene.addEventListener("mousedown", function (event) {
+          const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+          const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          const camera = document.querySelector("[camera]");
+          if (camera && camera.components && camera.components.camera) {
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2(mouseX, mouseY);
+
+            raycaster.setFromCamera(mouse, camera.components.camera.camera);
+
+            const hotspots = [];
+            document.querySelectorAll(".hotspot").forEach((hotspot) => {
+              if (hotspot.object3D) {
+                hotspots.push(hotspot.object3D);
+                hotspot.object3D.userData.element = hotspot;
+              }
+            });
+
+            const intersects = raycaster.intersectObjects(hotspots, true);
+
+            if (intersects.length > 0) {
+              let hotspotElement = intersects[0].object.userData.element;
+
+              if (!hotspotElement && intersects[0].object.parent) {
+                hotspotElement = intersects[0].object.parent.userData.element;
+              }
+
+              if (hotspotElement && hotspotElement.getAttribute("data-info")) {
+                const info = JSON.parse(
+                  hotspotElement.getAttribute("data-info")
+                );
+                showInfo(info.title, info.content);
+                event.stopPropagation();
+              }
+            }
+          }
+        });
+
+        // Touch cho mobile
+        scene.addEventListener("touchstart", function (event) {
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            const mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(touch.clientY / window.innerHeight) * 2 + 1;
+
+            const camera = document.querySelector("[camera]");
+            if (camera && camera.components && camera.components.camera) {
+              const raycaster = new THREE.Raycaster();
+              const mouse = new THREE.Vector2(mouseX, mouseY);
+
+              raycaster.setFromCamera(mouse, camera.components.camera.camera);
+
+              const hotspots = [];
+              document.querySelectorAll(".hotspot").forEach((hotspot) => {
+                if (hotspot.object3D) {
+                  hotspots.push(hotspot.object3D);
+                  hotspot.object3D.userData.element = hotspot;
+                }
+              });
+
+              const intersects = raycaster.intersectObjects(hotspots, true);
+
+              if (intersects.length > 0) {
+                let hotspotElement = intersects[0].object.userData.element;
+
+                if (!hotspotElement && intersects[0].object.parent) {
+                  hotspotElement = intersects[0].object.parent.userData.element;
+                }
+
+                if (
+                  hotspotElement &&
+                  hotspotElement.getAttribute("data-info")
+                ) {
+                  const info = JSON.parse(
+                    hotspotElement.getAttribute("data-info")
+                  );
+                  showInfo(info.title, info.content);
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+              }
+            }
+          }
+        });
+
+        // Tự động ẩn instructions trên mobile sau 5 giây
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const instructions = document.getElementById("instructions");
+            if (instructions) {
+              instructions.style.opacity = "0.7";
+              instructions.style.transform = "scale(0.9)";
+              instructions.style.transition = "all 0.3s ease";
+
+              // Ẩn hoàn toàn sau 10 giây
+              setTimeout(() => {
+                instructions.style.display = "none";
+              }, 10000);
+            }
+          }, 5000);
+        }
+
+        // Listen for scene load to ensure camera is set correctly
+        scene.addEventListener("loaded", () => {
+          const camera = document.querySelector("[camera]");
+          if (camera && window.innerWidth <= 768) {
+            // Force initial rotation for mobile
+            setTimeout(() => {
+              camera.setAttribute("rotation", "0 -180 0");
+              if (camera.components["look-controls"]) {
+                camera.components["look-controls"].pitchObject.rotation.x = 0;
+                camera.components["look-controls"].yawObject.rotation.y =
+                  THREE.Math.degToRad(-180);
+              }
+            }, 100);
+          }
+        });
+
+        console.log("Interactions setup complete!");
+      }
+
+      function showInfo(title, content) {
+        const panel = document.getElementById("infoPanel");
+        const infoContent = document.getElementById("infoContent");
+
+        infoContent.innerHTML = `
+          <h3>${title}</h3>
+          <p>${content}</p>
+        `;
+
+        panel.style.display = "block";
+
+        // Smooth animation
+        panel.style.opacity = "0";
+        panel.style.transform = "translateY(-10px)";
+        setTimeout(() => {
+          panel.style.opacity = "1";
+          panel.style.transform = "translateY(0)";
+          panel.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+        }, 10);
+
+        // Tự động ẩn - thời gian khác nhau cho desktop và mobile
+        const hideTime = window.innerWidth <= 768 ? 12000 : 15000;
+        setTimeout(() => {
+          panel.style.opacity = "0";
+          panel.style.transform = "translateY(-10px)";
+          setTimeout(() => {
+            panel.style.display = "none";
+          }, 300);
+        }, hideTime);
+      }
+
+      function closeInfo() {
+        const panel = document.getElementById("infoPanel");
+        panel.style.opacity = "0";
+        panel.style.transform = "translateY(-10px)";
+        setTimeout(() => {
+          panel.style.display = "none";
+        }, 300);
+      }
+    </script>
+  </body>
+</html>
