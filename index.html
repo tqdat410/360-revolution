@@ -205,11 +205,9 @@
     </div>
 
     <!-- Hướng dẫn -->
-    <div id="instructions">
-      💡 Ấn vào các nút để xem thông tin | 🔍 Cuộn chuột để zoom in
-    </div>
+    <div id="instructions">💡 Ấn vào các chấm tròn để xem thông tin</div>
 
-    <!-- Zoom Controls cho mobile -->
+    <!-- Zoom Controls cho mobile (đã ẩn) -->
     <div id="zoomControls" style="display: none">
       <button id="zoomIn">🔍+</button>
       <button id="zoomOut">🔍-</button>
@@ -656,21 +654,21 @@
           { passive: false }
         );
 
-        // Mobile zoom controls
-        if (window.innerWidth <= 768) {
-          const zoomControls = document.getElementById("zoomControls");
-          const zoomInBtn = document.getElementById("zoomIn");
-          const zoomOutBtn = document.getElementById("zoomOut");
-          const zoomResetBtn = document.getElementById("zoomReset");
+        // Mobile zoom controls (đã tắt hiển thị)
+        // if (window.innerWidth <= 768) {
+        //   const zoomControls = document.getElementById("zoomControls");
+        //   const zoomInBtn = document.getElementById("zoomIn");
+        //   const zoomOutBtn = document.getElementById("zoomOut");
+        //   const zoomResetBtn = document.getElementById("zoomReset");
 
-          if (zoomControls) {
-            zoomControls.style.display = "flex";
+        //   if (zoomControls) {
+        //     zoomControls.style.display = "flex";
 
-            zoomInBtn.addEventListener("click", zoomIn);
-            zoomOutBtn.addEventListener("click", zoomOut);
-            zoomResetBtn.addEventListener("click", resetZoom);
-          }
-        }
+        //     zoomInBtn.addEventListener("click", zoomIn);
+        //     zoomOutBtn.addEventListener("click", zoomOut);
+        //     zoomResetBtn.addEventListener("click", resetZoom);
+        //   }
+        // }
 
         // Touch pinch zoom for mobile - chỉ zoom in
         let initialDistance = 0;
