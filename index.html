@@ -150,6 +150,51 @@
           font-size: 10px;
         }
       }
+
+      /* Zoom Controls */
+      #zoomControls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+      }
+
+      #zoomControls button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      #zoomControls button:hover {
+        background: rgba(0, 0, 0, 0.9);
+        transform: scale(1.1);
+      }
+
+      #zoomControls button:active {
+        transform: scale(0.95);
+      }
+
+      @media screen and (max-width: 768px) {
+        #zoomControls {
+          bottom: 70px;
+          right: 15px;
+        }
+        #zoomControls button {
+          width: 45px;
+          height: 45px;
+          font-size: 16px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -160,13 +205,22 @@
     </div>
 
     <!-- Hướng dẫn -->
-    <div id="instructions">💡 Ấn vào các nút để xem thông tin</div>
+    <div id="instructions">
+      💡 Ấn vào các nút để xem thông tin | 🔍 Cuộn chuột để zoom in
+    </div>
+
+    <!-- Zoom Controls cho mobile -->
+    <div id="zoomControls" style="display: none">
+      <button id="zoomIn">🔍+</button>
+      <button id="zoomOut">🔍-</button>
+      <button id="zoomReset">↻</button>
+    </div>
 
     <a-scene>
       <!-- Ảnh 360° đặt làm skybox -->
       <a-sky
-        src="https://res.cloudinary.com/do6szo7zy/image/upload/v1758818587/ssd_final_8_cbidgr.png"
-        rotation="0 120 0"
+        src="https://res.cloudinary.com/do6szo7zy/image/upload/v1759080957/final_8_q3xwgt.png"
+        rotation="0 -90 0"
       ></a-sky>
 
       <!-- Giai đoạn 1: Thời kỳ Sơ khai (0°) -->
@@ -302,18 +356,19 @@
         data-info='{"title": "Kỷ Nguyên AI - Sản Xuất", "content": "1. Trí tuệ nhân tạo tổng quát (AGI), robot có khả năng học hỏi, sáng tạo.<br><br>2. Xã hội hậu công nghiệp, có thể áp dụng UBI (thu nhập cơ bản phổ quát).<br><br>3. Con người tập trung vào sáng tạo, phát triển tinh thần và tri thức."}'
       ></a-sphere>
 
-      <!-- Camera với cursor để click -->
+      <!-- Camera với cursor để click và zoom -->
       <a-entity
         camera
         look-controls="enabled: true; minVerticalLook: -60; maxVerticalLook: 60; touchEnabled: true; magicWindowTrackingEnabled: true"
         wasd-controls="enabled: false"
-        rotation="0 -180 0"
+        rotation="0 0 0"
         position="0 1.6 0"
+        zoom-control
       >
         <a-entity
           cursor="fuse: true; fuseTimeout: 1500"
           position="0 0 -1"
-          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+          geometry="primitive: ring; radiusInner: 0.008; radiusOuter: 0.015"
           material="color: white; shader: flat"
           raycaster="objects: .clickable; far: 50"
         >
@@ -349,8 +404,8 @@
               magicWindowTrackingEnabled: false, // Tắt cảm biến ban đầu
             });
 
-            // Set fixed initial rotation
-            camera.setAttribute("rotation", "0 -180 0");
+            // Set fixed initial rotation to center
+            camera.setAttribute("rotation", "0 0 0");
 
             // After a delay, enable device orientation tracking
             setTimeout(() => {
@@ -369,14 +424,14 @@
 
             // Force camera position multiple times to ensure it sticks
             setTimeout(() => {
-              camera.setAttribute("rotation", "0 -180 0");
+              camera.setAttribute("rotation", "0 0 0");
               if (camera.object3D) {
-                camera.object3D.rotation.set(0, THREE.Math.degToRad(-180), 0);
+                camera.object3D.rotation.set(0, 0, 0);
               }
             }, 500);
 
             setTimeout(() => {
-              camera.setAttribute("rotation", "0 -180 0");
+              camera.setAttribute("rotation", "0 0 0");
             }, 1000);
           }
         }
@@ -501,7 +556,9 @@
           }
         });
 
-        // Tự động ẩn instructions trên mobile
+        // Setup zoom controls và tự động ẩn instructions
+        setupZoomControls();
+
         if (window.innerWidth <= 768) {
           setTimeout(() => {
             const instructions = document.getElementById("instructions");
@@ -522,13 +579,12 @@
         scene.addEventListener("loaded", () => {
           const camera = document.querySelector("[camera]");
           if (camera && window.innerWidth <= 768) {
-            // Force initial rotation for mobile
+            // Force initial rotation to center for mobile
             setTimeout(() => {
-              camera.setAttribute("rotation", "0 -180 0");
+              camera.setAttribute("rotation", "0 0 0");
               if (camera.components["look-controls"]) {
                 camera.components["look-controls"].pitchObject.rotation.x = 0;
-                camera.components["look-controls"].yawObject.rotation.y =
-                  THREE.Math.degToRad(-180);
+                camera.components["look-controls"].yawObject.rotation.y = 0;
               }
             }, 100);
           }
@@ -576,6 +632,114 @@
           panel.style.display = "none";
         }, 300);
       }
+
+      // Zoom functionality - chỉ zoom in từ vị trí mặc định
+      let currentFOV = 75; // Default FOV (vị trí mặc định)
+      const minFOV = 45; // Max zoom in
+      const defaultFOV = 75; // Vị trí mặc định
+
+      function setupZoomControls() {
+        const camera = document.querySelector("[camera]");
+
+        // Mouse wheel zoom for desktop (chỉ zoom in)
+        document.addEventListener(
+          "wheel",
+          function (event) {
+            event.preventDefault();
+
+            if (event.deltaY < 0) {
+              zoomIn(); // Cuộn lên = zoom in
+            } else {
+              zoomOut(); // Cuộn xuống = trở về vị trí mặc định
+            }
+          },
+          { passive: false }
+        );
+
+        // Mobile zoom controls
+        if (window.innerWidth <= 768) {
+          const zoomControls = document.getElementById("zoomControls");
+          const zoomInBtn = document.getElementById("zoomIn");
+          const zoomOutBtn = document.getElementById("zoomOut");
+          const zoomResetBtn = document.getElementById("zoomReset");
+
+          if (zoomControls) {
+            zoomControls.style.display = "flex";
+
+            zoomInBtn.addEventListener("click", zoomIn);
+            zoomOutBtn.addEventListener("click", zoomOut);
+            zoomResetBtn.addEventListener("click", resetZoom);
+          }
+        }
+
+        // Touch pinch zoom for mobile - chỉ zoom in
+        let initialDistance = 0;
+        let initialFOV = currentFOV;
+
+        document.addEventListener("touchstart", function (event) {
+          if (event.touches.length === 2) {
+            initialDistance = getDistance(event.touches[0], event.touches[1]);
+            initialFOV = currentFOV;
+          }
+        });
+
+        document.addEventListener(
+          "touchmove",
+          function (event) {
+            if (event.touches.length === 2) {
+              event.preventDefault();
+              const currentDistance = getDistance(
+                event.touches[0],
+                event.touches[1]
+              );
+              const scale = currentDistance / initialDistance;
+
+              // Cho phép zoom in và zoom out mượt mà
+              const newFOV = initialFOV / scale;
+              setFOV(newFOV);
+            }
+          },
+          { passive: false }
+        );
+      }
+
+      function zoomIn() {
+        const newFOV = Math.max(minFOV, currentFOV - 10);
+        setFOV(newFOV);
+      }
+
+      function zoomOut() {
+        // Zoom out mượt mà thay vì nhảy về mặc định
+        const newFOV = Math.min(defaultFOV, currentFOV + 10);
+        setFOV(newFOV);
+      }
+
+      function resetZoom() {
+        setFOV(defaultFOV); // Reset về vị trí mặc định
+      }
+
+      function setFOV(fov) {
+        currentFOV = Math.max(minFOV, Math.min(defaultFOV, fov));
+        const camera = document.querySelector("[camera]");
+
+        if (camera && camera.components && camera.components.camera) {
+          camera.components.camera.camera.fov = currentFOV;
+          camera.components.camera.camera.updateProjectionMatrix();
+        }
+      }
+
+      function getDistance(touch1, touch2) {
+        const dx = touch1.clientX - touch2.clientX;
+        const dy = touch1.clientY - touch2.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      // Register custom zoom component
+      AFRAME.registerComponent("zoom-control", {
+        init: function () {
+          this.el.setAttribute("camera", "fov", currentFOV);
+        },
+      });
     </script>
   </body>
 </html>
