@@ -195,6 +195,61 @@
           font-size: 16px;
         }
       }
+
+      /* Page Switch Button */
+      #pageSwitch {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+      }
+
+      #pageSwitch button {
+        background: rgba(255, 107, 107, 0.9);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+      }
+
+      #pageSwitch button:hover {
+        background: rgba(255, 107, 107, 1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      }
+
+      #pageSwitch button:active {
+        transform: translateY(0);
+      }
+
+      @media screen and (max-width: 768px) {
+        #pageSwitch {
+          top: 15px;
+          left: 15px;
+        }
+        #pageSwitch button {
+          padding: 10px 16px;
+          font-size: 12px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        #pageSwitch {
+          top: 10px;
+          left: 10px;
+        }
+        #pageSwitch button {
+          padding: 8px 12px;
+          font-size: 11px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -207,19 +262,23 @@
     <!-- Hướng dẫn -->
     <div id="instructions">💡 Ấn vào các chấm tròn để xem thông tin</div>
 
+    <!-- Nút chuyển đổi trang -->
+    <div id="pageSwitch">
+      <button onclick="switchToSecondPage()" title="Chuyển sang trang 2">
+        🖼️ Chuyển Cảnh
+      </button>
+    </div>
+
     <!-- Zoom Controls cho mobile (đã ẩn) -->
     <div id="zoomControls" style="display: none">
       <button id="zoomIn">🔍+</button>
       <button id="zoomOut">🔍-</button>
       <button id="zoomReset">↻</button>
     </div>
-
+    <!-- https://res.cloudinary.com/do6szo7zy/image/upload/v1759080957/final_8_q3xwgt.png -->
     <a-scene>
       <!-- Ảnh 360° đặt làm skybox -->
-      <a-sky
-        src="https://res.cloudinary.com/do6szo7zy/image/upload/v1759080957/final_8_q3xwgt.png"
-        rotation="0 -90 0"
-      ></a-sky>
+      <a-sky src="final_8.png" rotation="0 -90 0"></a-sky>
 
       <!-- Giai đoạn 1: Thời kỳ Sơ khai (0°) -->
       <a-sphere
@@ -738,6 +797,11 @@
           this.el.setAttribute("camera", "fov", currentFOV);
         },
       });
+
+      // Function to switch to second page
+      function switchToSecondPage() {
+        window.location.href = "index_2.html";
+      }
     </script>
   </body>
 </html>

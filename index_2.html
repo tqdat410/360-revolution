@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Cách Mạng Công Nghiệp - Trải Nghiệm 360°</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <style>
+      #infoPanel {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        max-height: 400px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+        display: none;
+        z-index: 1000;
+        overflow-y: auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      #infoPanel h3 {
+        margin-top: 0;
+        color: #4caf50;
+        font-size: 18px;
+      }
+      #infoPanel p {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      #closeBtn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 5px;
+      }
+      #instructions {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 20px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        z-index: 1000;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Responsive cho mobile */
+      @media screen and (max-width: 768px) {
+        #infoPanel {
+          top: 10px;
+          right: 10px;
+          left: 10px;
+          width: auto;
+          max-height: 50vh;
+          padding: 15px;
+        }
+        #infoPanel h3 {
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+        #infoPanel p {
+          font-size: 13px;
+          line-height: 1.4;
+        }
+        #closeBtn {
+          font-size: 20px;
+          top: 8px;
+          right: 12px;
+        }
+        #instructions {
+          bottom: 15px;
+          left: 15px;
+          right: 15px;
+          text-align: center;
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        #infoPanel {
+          top: 5px;
+          right: 5px;
+          left: 5px;
+          max-height: 45vh;
+          padding: 12px;
+        }
+        #infoPanel h3 {
+          font-size: 15px;
+        }
+        #infoPanel p {
+          font-size: 12px;
+        }
+        #instructions {
+          bottom: 10px;
+          left: 10px;
+          right: 10px;
+          padding: 10px 10px;
+          font-size: 11px;
+        }
+      }
+
+      /* Responsive cho màn hình điện thoại nằm ngang */
+      @media screen and (max-height: 500px) and (orientation: landscape) {
+        #infoPanel {
+          top: 5px;
+          right: 5px;
+          left: 5px;
+          width: auto;
+          max-height: 70vh;
+          padding: 8px 12px;
+          font-size: 11px;
+        }
+        #infoPanel h3 {
+          font-size: 13px;
+          margin-top: 0;
+          margin-bottom: 6px;
+        }
+        #infoPanel p {
+          font-size: 10px;
+          line-height: 1.3;
+          margin-bottom: 0;
+        }
+        #closeBtn {
+          font-size: 16px;
+          top: 4px;
+          right: 8px;
+          padding: 2px;
+        }
+        #instructions {
+          bottom: 8px;
+          left: 8px;
+          right: 8px;
+          padding: 6px 8px;
+          font-size: 10px;
+        }
+      }
+
+      /* Zoom Controls */
+      #zoomControls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1000;
+      }
+
+      #zoomControls button {
+        width: 50px;
+        height: 50px;
+        border: none;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      #zoomControls button:hover {
+        background: rgba(0, 0, 0, 0.9);
+        transform: scale(1.1);
+      }
+
+      #zoomControls button:active {
+        transform: scale(0.95);
+      }
+
+      @media screen and (max-width: 768px) {
+        #zoomControls {
+          bottom: 70px;
+          right: 15px;
+        }
+        #zoomControls button {
+          width: 45px;
+          height: 45px;
+          font-size: 16px;
+        }
+      }
+
+      /* Page Switch Button */
+      #pageSwitch {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+      }
+
+      #pageSwitch button {
+        background: rgba(76, 175, 80, 0.9);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+      }
+
+      #pageSwitch button:hover {
+        background: rgba(76, 175, 80, 1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      }
+
+      #pageSwitch button:active {
+        transform: translateY(0);
+      }
+
+      @media screen and (max-width: 768px) {
+        #pageSwitch {
+          top: 15px;
+          left: 15px;
+        }
+        #pageSwitch button {
+          padding: 10px 16px;
+          font-size: 12px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        #pageSwitch {
+          top: 10px;
+          left: 10px;
+        }
+        #pageSwitch button {
+          padding: 8px 12px;
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Panel thông tin -->
+    <div id="infoPanel">
+      <button id="closeBtn" onclick="closeInfo()">&times;</button>
+      <div id="infoContent"></div>
+    </div>
+
+    <!-- Hướng dẫn -->
+    <div id="instructions">💡 Ấn vào các chấm tròn để xem thông tin</div>
+
+    <!-- Nút chuyển đổi trang -->
+    <div id="pageSwitch">
+      <button onclick="switchToMainPage()" title="Chuyển sang trang chính">
+        🖼️ Chuyển Cảnh
+      </button>
+    </div>
+
+    <!-- Zoom Controls cho mobile (đã ẩn) -->
+    <div id="zoomControls" style="display: none">
+      <button id="zoomIn">🔍+</button>
+      <button id="zoomOut">🔍-</button>
+      <button id="zoomReset">↻</button>
+    </div>
+
+    <a-scene>
+      <!-- Ảnh 360° đặt làm skybox -->
+      <a-sky src="final_3.png" rotation="0 -180 0"></a-sky>
+
+      <!-- Giai đoạn 1: Thời kỳ Sơ khai (0°) -->
+      <a-sphere
+        id="hotspot1-1"
+        position="0 5.5 -15"
+        radius="0.5"
+        color="#FF6B6B"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "Thời Kỳ Sơ Khai - Triết Học", "content": "1. Triết học giai đoạn này vẫn mang tính tôn giáo và thần học (Kitô giáo ở châu Âu, Nho giáo ở phương Đông).<br><br>2. Triết học Hy Lạp – La Mã cổ đại (Plato, Aristotle) vẫn còn ảnh hưởng.<br><br>3. Chủ yếu bàn về tôn giáo, đạo đức, trật tự xã hội.<br><br>4. Con người sống hòa hợp với thiên nhiên, tin vào số phận và thần linh."}'
+      ></a-sphere>
+
+      <a-sphere
+        id="hotspot1-2"
+        position="0 -2 -15"
+        radius="0.5"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "Thời Kỳ Sơ Khai - Sản Xuất", "content": "1. Nền sản xuất chủ yếu dựa vào nông nghiệp và thủ công nghiệp.<br><br>2. Xã hội theo mô hình phong kiến, tự cung tự cấp, sản xuất quy mô nhỏ.<br><br>3. Công cụ lao động còn thô sơ (cuốc, cày, rìu, búa)."}'
+      ></a-sphere>
+
+      <!-- Camera với cursor để click và zoom -->
+      <a-entity
+        camera
+        look-controls="enabled: true; minVerticalLook: -60; maxVerticalLook: 60; touchEnabled: true; magicWindowTrackingEnabled: true"
+        wasd-controls="enabled: false"
+        rotation="0 0 0"
+        position="0 1.6 0"
+        zoom-control
+      >
+        <a-entity
+          cursor="fuse: true; fuseTimeout: 1500"
+          position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.008; radiusOuter: 0.015"
+          material="color: white; shader: flat"
+          raycaster="objects: .clickable; far: 50"
+        >
+        </a-entity>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      // Đợi A-Frame load xong
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          setupInteractions();
+          setupMobileCamera();
+        }, 1000);
+      });
+
+      function setupMobileCamera() {
+        const camera = document.querySelector("[camera]");
+
+        if (camera) {
+          // Force reset camera rotation on mobile
+          if (window.innerWidth <= 768) {
+            // Disable device orientation initially to set fixed starting position
+            camera.setAttribute("look-controls", {
+              enabled: true,
+              touchEnabled: true,
+              mouseEnabled: true,
+              pointerLockEnabled: false,
+              reverseMouseDrag: false,
+              reverseTouchDrag: false,
+              minVerticalLook: -60,
+              maxVerticalLook: 60,
+              magicWindowTrackingEnabled: false, // Tắt cảm biến ban đầu
+            });
+
+            // Set fixed initial rotation to center
+            camera.setAttribute("rotation", "0 0 0");
+
+            // After a delay, enable device orientation tracking
+            setTimeout(() => {
+              camera.setAttribute("look-controls", {
+                enabled: true,
+                touchEnabled: true,
+                mouseEnabled: true,
+                pointerLockEnabled: false,
+                reverseMouseDrag: false,
+                reverseTouchDrag: false,
+                minVerticalLook: -60,
+                maxVerticalLook: 60,
+                magicWindowTrackingEnabled: true, // Bật lại cảm biến sau khi đã set vị trí
+              });
+            }, 1500);
+
+            // Force camera position multiple times to ensure it sticks
+            setTimeout(() => {
+              camera.setAttribute("rotation", "0 0 0");
+              if (camera.object3D) {
+                camera.object3D.rotation.set(0, 0, 0);
+              }
+            }, 500);
+
+            setTimeout(() => {
+              camera.setAttribute("rotation", "0 0 0");
+            }, 1000);
+          }
+        }
+      }
+
+      function setupInteractions() {
+        // Xử lý click vào hotspot
+        document.querySelectorAll(".hotspot").forEach((hotspot) => {
+          hotspot.addEventListener("click", function () {
+            const info = JSON.parse(this.getAttribute("data-info"));
+            showInfo(info.title, info.content);
+          });
+
+          // Xử lý fuse (mobile - nhìn lâu vào điểm)
+          hotspot.addEventListener("fusing", function () {
+            this.setAttribute("scale", "1.3 1.3 1.3");
+          });
+
+          hotspot.addEventListener("fused", function () {
+            const info = JSON.parse(this.getAttribute("data-info"));
+            showInfo(info.title, info.content);
+            this.setAttribute("scale", "1 1 1");
+          });
+
+          // Hiệu ứng hover
+          hotspot.addEventListener("mouseenter", function () {
+            this.setAttribute("scale", "1.2 1.2 1.2");
+          });
+
+          hotspot.addEventListener("mouseleave", function () {
+            this.setAttribute("scale", "1 1 1");
+          });
+        });
+
+        // Thêm tương tác click trực tiếp không cần cursor
+        const scene = document.querySelector("a-scene");
+
+        // Click trực tiếp cho desktop
+        scene.addEventListener("mousedown", function (event) {
+          const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+          const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          const camera = document.querySelector("[camera]");
+          if (camera && camera.components && camera.components.camera) {
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2(mouseX, mouseY);
+
+            raycaster.setFromCamera(mouse, camera.components.camera.camera);
+
+            const hotspots = [];
+            document.querySelectorAll(".hotspot").forEach((hotspot) => {
+              if (hotspot.object3D) {
+                hotspots.push(hotspot.object3D);
+                hotspot.object3D.userData.element = hotspot;
+              }
+            });
+
+            const intersects = raycaster.intersectObjects(hotspots, true);
+
+            if (intersects.length > 0) {
+              let hotspotElement = intersects[0].object.userData.element;
+
+              if (!hotspotElement && intersects[0].object.parent) {
+                hotspotElement = intersects[0].object.parent.userData.element;
+              }
+
+              if (hotspotElement && hotspotElement.getAttribute("data-info")) {
+                const info = JSON.parse(
+                  hotspotElement.getAttribute("data-info")
+                );
+                showInfo(info.title, info.content);
+                event.stopPropagation();
+              }
+            }
+          }
+        });
+
+        // Touch cho mobile
+        scene.addEventListener("touchstart", function (event) {
+          if (event.touches.length === 1) {
+            const touch = event.touches[0];
+            const mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(touch.clientY / window.innerHeight) * 2 + 1;
+
+            const camera = document.querySelector("[camera]");
+            if (camera && camera.components && camera.components.camera) {
+              const raycaster = new THREE.Raycaster();
+              const mouse = new THREE.Vector2(mouseX, mouseY);
+
+              raycaster.setFromCamera(mouse, camera.components.camera.camera);
+
+              const hotspots = [];
+              document.querySelectorAll(".hotspot").forEach((hotspot) => {
+                if (hotspot.object3D) {
+                  hotspots.push(hotspot.object3D);
+                  hotspot.object3D.userData.element = hotspot;
+                }
+              });
+
+              const intersects = raycaster.intersectObjects(hotspots, true);
+
+              if (intersects.length > 0) {
+                let hotspotElement = intersects[0].object.userData.element;
+
+                if (!hotspotElement && intersects[0].object.parent) {
+                  hotspotElement = intersects[0].object.parent.userData.element;
+                }
+
+                if (
+                  hotspotElement &&
+                  hotspotElement.getAttribute("data-info")
+                ) {
+                  const info = JSON.parse(
+                    hotspotElement.getAttribute("data-info")
+                  );
+                  showInfo(info.title, info.content);
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+              }
+            }
+          }
+        });
+
+        // Setup zoom controls và tự động ẩn instructions
+        setupZoomControls();
+
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const instructions = document.getElementById("instructions");
+            if (instructions) {
+              instructions.style.opacity = "0.7";
+              instructions.style.transform = "scale(0.9)";
+              instructions.style.transition = "all 0.3s ease";
+
+              // Ẩn hoàn toàn sau 10 giây
+              setTimeout(() => {
+                instructions.style.display = "none";
+              }, 10000);
+            }
+          }, 5000);
+        }
+
+        // Listen for scene load to ensure camera is set correctly
+        scene.addEventListener("loaded", () => {
+          const camera = document.querySelector("[camera]");
+          if (camera && window.innerWidth <= 768) {
+            // Force initial rotation to center for mobile
+            setTimeout(() => {
+              camera.setAttribute("rotation", "0 0 0");
+              if (camera.components["look-controls"]) {
+                camera.components["look-controls"].pitchObject.rotation.x = 0;
+                camera.components["look-controls"].yawObject.rotation.y = 0;
+              }
+            }, 100);
+          }
+        });
+
+        console.log("Interactions setup complete!");
+      }
+
+      function showInfo(title, content) {
+        const panel = document.getElementById("infoPanel");
+        const infoContent = document.getElementById("infoContent");
+
+        infoContent.innerHTML = `
+          <h3>${title}</h3>
+          <p>${content}</p>
+        `;
+
+        panel.style.display = "block";
+
+        // Smooth animation
+        panel.style.opacity = "0";
+        panel.style.transform = "translateY(-10px)";
+        setTimeout(() => {
+          panel.style.opacity = "1";
+          panel.style.transform = "translateY(0)";
+          panel.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+        }, 10);
+
+        // Tự động ẩn - thời gian khác nhau cho desktop và mobile
+        const hideTime = window.innerWidth <= 768 ? 12000 : 15000;
+        setTimeout(() => {
+          panel.style.opacity = "0";
+          panel.style.transform = "translateY(-10px)";
+          setTimeout(() => {
+            panel.style.display = "none";
+          }, 300);
+        }, hideTime);
+      }
+
+      function closeInfo() {
+        const panel = document.getElementById("infoPanel");
+        panel.style.opacity = "0";
+        panel.style.transform = "translateY(-10px)";
+        setTimeout(() => {
+          panel.style.display = "none";
+        }, 300);
+      }
+
+      // Zoom functionality - chỉ zoom in từ vị trí mặc định
+      let currentFOV = 75; // Default FOV (vị trí mặc định)
+      const minFOV = 45; // Max zoom in
+      const defaultFOV = 75; // Vị trí mặc định
+
+      function setupZoomControls() {
+        const camera = document.querySelector("[camera]");
+
+        // Mouse wheel zoom for desktop (chỉ zoom in)
+        document.addEventListener(
+          "wheel",
+          function (event) {
+            event.preventDefault();
+
+            if (event.deltaY < 0) {
+              zoomIn(); // Cuộn lên = zoom in
+            } else {
+              zoomOut(); // Cuộn xuống = trở về vị trí mặc định
+            }
+          },
+          { passive: false }
+        );
+
+        // Mobile zoom controls (đã tắt hiển thị)
+        // if (window.innerWidth <= 768) {
+        //   const zoomControls = document.getElementById("zoomControls");
+        //   const zoomInBtn = document.getElementById("zoomIn");
+        //   const zoomOutBtn = document.getElementById("zoomOut");
+        //   const zoomResetBtn = document.getElementById("zoomReset");
+
+        //   if (zoomControls) {
+        //     zoomControls.style.display = "flex";
+
+        //     zoomInBtn.addEventListener("click", zoomIn);
+        //     zoomOutBtn.addEventListener("click", zoomOut);
+        //     zoomResetBtn.addEventListener("click", resetZoom);
+        //   }
+        // }
+
+        // Touch pinch zoom for mobile - chỉ zoom in
+        let initialDistance = 0;
+        let initialFOV = currentFOV;
+
+        document.addEventListener("touchstart", function (event) {
+          if (event.touches.length === 2) {
+            initialDistance = getDistance(event.touches[0], event.touches[1]);
+            initialFOV = currentFOV;
+          }
+        });
+
+        document.addEventListener(
+          "touchmove",
+          function (event) {
+            if (event.touches.length === 2) {
+              event.preventDefault();
+              const currentDistance = getDistance(
+                event.touches[0],
+                event.touches[1]
+              );
+              const scale = currentDistance / initialDistance;
+
+              // Cho phép zoom in và zoom out mượt mà
+              const newFOV = initialFOV / scale;
+              setFOV(newFOV);
+            }
+          },
+          { passive: false }
+        );
+      }
+
+      function zoomIn() {
+        const newFOV = Math.max(minFOV, currentFOV - 10);
+        setFOV(newFOV);
+      }
+
+      function zoomOut() {
+        // Zoom out mượt mà thay vì nhảy về mặc định
+        const newFOV = Math.min(defaultFOV, currentFOV + 10);
+        setFOV(newFOV);
+      }
+
+      function resetZoom() {
+        setFOV(defaultFOV); // Reset về vị trí mặc định
+      }
+
+      function setFOV(fov) {
+        currentFOV = Math.max(minFOV, Math.min(defaultFOV, fov));
+        const camera = document.querySelector("[camera]");
+
+        if (camera && camera.components && camera.components.camera) {
+          camera.components.camera.camera.fov = currentFOV;
+          camera.components.camera.camera.updateProjectionMatrix();
+        }
+      }
+
+      function getDistance(touch1, touch2) {
+        const dx = touch1.clientX - touch2.clientX;
+        const dy = touch1.clientY - touch2.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      // Register custom zoom component
+      AFRAME.registerComponent("zoom-control", {
+        init: function () {
+          this.el.setAttribute("camera", "fov", currentFOV);
+        },
+      });
+
+      // Function to switch to main page
+      function switchToMainPage() {
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>
