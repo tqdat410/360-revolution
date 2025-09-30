@@ -336,11 +336,11 @@
     </div>
 
     <!-- Nút chuyển đổi trang -->
-    <div id="pageSwitch">
+    <!-- <div id="pageSwitch">
       <button onclick="switchToSecondPage()" title="Chuyển sang trang 2">
         🖼️ Chuyển Cảnh
       </button>
-    </div>
+    </div> -->
 
     <!-- Zoom Controls cho mobile (đã ẩn) -->
     <div id="zoomControls" style="display: none">
@@ -348,7 +348,7 @@
       <button id="zoomOut">🔍-</button>
       <button id="zoomReset">↻</button>
     </div>
-    <!-- https://res.cloudinary.com/do6szo7zy/image/upload/v1759080957/final_8_q3xwgt.png -->
+
     <a-scene>
       <!-- Ảnh 360° đặt làm skybox với tối ưu hóa -->
       <a-sky
@@ -357,137 +357,129 @@
         rotation="0 -90 0"
       ></a-sky>
 
-      <!-- Giai đoạn 1: Thời kỳ Sơ khai (0°) -->
+      <!-- Giai đoạn 1: Cách mạng Công nghiệp 1.0 (0°) -->
       <a-sphere
         id="hotspot1-1"
-        position="0 5.5 -15"
-        radius="0.5"
-        color="#FF6B6B"
-        opacity="0.8"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
-        class="hotspot clickable"
-        data-info='{"title": "Thời Kỳ Sơ Khai - Triết Học", "content": "1. Triết học giai đoạn này vẫn mang tính tôn giáo và thần học (Kitô giáo ở châu Âu, Nho giáo ở phương Đông).<br><br>2. Triết học Hy Lạp – La Mã cổ đại (Plato, Aristotle) vẫn còn ảnh hưởng.<br><br>3. Chủ yếu bàn về tôn giáo, đạo đức, trật tự xã hội.<br><br>4. Con người sống hòa hợp với thiên nhiên, tin vào số phận và thần linh."}'
-      ></a-sphere>
-
-      <a-sphere
-        id="hotspot1-2"
-        position="0 -2 -15"
-        radius="0.5"
+        position="0 3.5 -15"
+        radius="0.4"
         color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "Thời Kỳ Sơ Khai - Sản Xuất", "content": "1. Nền sản xuất chủ yếu dựa vào nông nghiệp và thủ công nghiệp.<br><br>2. Xã hội theo mô hình phong kiến, tự cung tự cấp, sản xuất quy mô nhỏ.<br><br>3. Công cụ lao động còn thô sơ (cuốc, cày, rìu, búa)."}'
+        data-info='{"title": "CMCN 1.0", "content": "“Cối xay tay gắn với xã hội lãnh chúa; cối xay hơi nước gắn với xã hội nhà tư bản công nghiệp.”<br><br>(C. Mác, Sự khốn cùng của triết học)."}'
       ></a-sphere>
 
-      <!-- Giai đoạn 2: Cách mạng Công nghiệp 1.0 (30°) -->
+      <a-sphere
+        id="hotspot1-2"
+        position="0 -0.4 -15"
+        radius="0.4"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 1.0", "content": "LLSX mới này bị kìm hãm bởi QHSX phong kiến cũ. Mâu thuẫn này biểu hiện về mặt xã hội thành cuộc đấu tranh giai cấp giữa tư sản (đại diện cho LLSX mới) và phong kiến (bảo vệ QHSX cũ).<br><br>Kết quả là các cuộc cách mạng tư sản nổ ra, xác lập QHSX tư bản chủ nghĩa, mở đường cho LLSX phát triển."}'
+      ></a-sphere>
+
+      <a-sphere
+        id="hotspot1-2"
+        position="0 -5 -15"
+        radius="0.4"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 1.0", "content": "Sự ra đời của động cơ hơi nước và nền sản xuất cơ khí hóa (LLSX mới) đã tạo ra giai cấp công nhân và giai cấp tư sản công nghiệp. Năng suất lao động tăng vọt, đòi hỏi thị trường rộng lớn và tự do lưu thông."}'
+      ></a-sphere>
+
+      <!-- Giai đoạn 2: Cách mạng Công nghiệp 2.0 (30°) -->
       <a-sphere
         id="hotspot2-1"
-        position="25 9.5 -15"
-        radius="0.9"
-        color="#FF6B6B"
+        position="27 -2 -15"
+        radius="0.8"
+        color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "CMCN 1.0 - Triết Học", "content": "1. Thời kỳ Khai sáng (Enlightenment) – niềm tin vào lý trí và tiến bộ khoa học.<br><br>2. Triết gia tiêu biểu: John Locke, Montesquieu, Rousseau, Voltaire.<br><br>3. Sự kiện nổi bật: Cách mạng tư sản Anh (1640), Cách mạng Pháp (1789) → thúc đẩy tư tưởng tự do, dân chủ, nhân quyền."}'
+        data-info='{"title": "CMCN 2.0", "content": "Chủ nghĩa tư bản trong giai đoạn này phát triển thành chủ nghĩa đế quốc, đặc trưng bởi sự tập trung tư bản và sản xuất vào các tập đoàn độc quyền, ngân hàng lớn và tư bản tài chính. Các cường quốc công nghiệp (Anh, Pháp, Đức, Mỹ, Nhật Bản…) cạnh tranh khốc liệt để giành thị trường tiêu thụ, nguồn nguyên liệu và thuộc địa."}'
       ></a-sphere>
+
+      <a-sphere
+        id="hotspot2-1"
+        position="130 -13 -15"
+        radius="3"
+        color="#4ECDC4"
+        opacity="0.8"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
+        class="hotspot clickable"
+        data-info='{"title": "CMCN 2.0", "content": "Cuộc đấu tranh giữa giai cấp vô sản (đại diện cho LLSX xã hội hóa) và giai cấp tư sản đế quốc trở thành động lực trực tiếp của lịch sử.<br><br>Cách mạng Tháng Mười Nga năm 1917 chính là cuộc CMXH giải quyết mâu thuẫn đó, thiết lập QHSX mới dựa trên sở hữu công cộng, phù hợp với trình độ xã hội hóa của LLSX."}'
+      ></a-sphere>
+
       <a-sphere
         id="hotspot2-2"
-        position="25 -5 -15"
-        radius="0.9"
-        color="#6EDDD6"
+        position="46.5 -20 -15"
+        radius="1.2"
+        color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "CMCN 1.0 - Sản Xuất", "content": "1. Ra đời máy hơi nước (James Watt).<br><br>2. Chuyển từ sản xuất thủ công sang cơ khí hóa.<br><br>3. Sự ra đời của nhà máy, xưởng cơ khí, ngành dệt may, khai thác than đá.<br><br>4. Xã hội bắt đầu hình thành giai cấp công nhân và tư sản."}'
+        data-info='{"title": "CMCN 2.0", "content": "CMCN lần thứ hai với điện và sản xuất dây chuyền đã đưa LLSX lên một trình độ mới: trình độ xã hội hóa cao độ. Hàng triệu công nhân làm việc trong các nhà máy khổng lồ, liên kết chặt chẽ với nhau."}'
       ></a-sphere>
 
       <!-- Giai đoạn 3: Cách mạng Công nghiệp 2.0 (60°) -->
       <a-sphere
         id="hotspot3-1"
-        position="25 9.5 16"
-        radius="0.9"
-        color="#FF6B6B"
+        position="11.6 -0.5 16"
+        radius="0.5"
+        color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "CMCN 2.0 - Triết Học", "content": "1. Chủ nghĩa tích cực (Positivism) của Auguste Comte → coi khoa học là nền tảng tiến bộ xã hội.<br><br>2. Triết học Mác – Lênin ra đời (Karl Marx, Friedrich Engels) → phê phán CNTB, đưa ra học thuyết duy vật biện chứng và duy vật lịch sử.<br><br>3. Phong trào công nhân, Quốc tế Cộng sản hình thành."}'
+        data-info='{"title": "CMCN 3.0", "content": "Toàn cầu hóa - Sự kết nối toàn cầu nhờ công nghệ thông tin và truyền thông, giúp thế giới trở nên phẳng hơn, hàng hóa – tri thức – con người có thể lưu thông nhanh chóng."}'
       ></a-sphere>
+
       <a-sphere
         id="hotspot3-2"
-        position="25 -5 16"
-        radius="0.9"
-        color="#67C3DD"
+        position="11.6 -7 16"
+        radius="0.5"
+        color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "CMCN 2.0 - Sản Xuất", "content": "1. Sự xuất hiện của điện, động cơ đốt trong, dây chuyền sản xuất hàng loạt (Henry Ford).<br><br>2. Phát triển ngành thép, hóa chất, viễn thông.<br><br>3. Đẩy mạnh sản xuất hàng loạt, tiêu chuẩn hóa."}'
+        data-info='{"title": "CMCN 3.0", "content": "Tự động hóa: Dây chuyền sản xuất tự động với robot công nghiệp, đặc trưng tiêu biểu của CMCN 3.0, nơi máy móc thay thế con người trong nhiều công đoạn sản xuất."}'
       ></a-sphere>
 
       <!-- Giai đoạn 4: Cách mạng Công nghiệp 3.0 (90°) -->
       <a-sphere
         id="hotspot4-1"
-        position="0 5.5 15"
+        position="-6.5 4.7 15"
         radius="0.5"
-        color="#FF6B6B"
+        color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "CMCN 3.0 - Triết Học", "content": "1. Triết học hiện sinh (Existentialism) (Jean-Paul Sartre, Martin Heidegger): bàn về sự hiện hữu và tự do cá nhân.<br><br>2. Chủ nghĩa cấu trúc và hậu cấu trúc (Michel Foucault, Jacques Derrida).<br><br>3. Triết học khoa học phát triển: Karl Popper (phản bác tính tuyệt đối của khoa học), Thomas Kuhn (các cách mạng khoa học).<br><br>4. Sự kiện: Chiến tranh Lạnh, chạy đua công nghệ vũ trụ."}'
+        data-info='{"title": "CMCN 4.0", "content": "Kỷ nguyên AI: Biểu tượng của trí tuệ nhân tạo và robot thông minh – trung tâm của tự động hóa nâng cao. Đây là thời kỳ mà máy móc không chỉ làm theo lệnh, mà còn có khả năng học hỏi, phân tích dữ liệu và đưa ra quyết định, thay thế con người trong nhiều lĩnh vực từ sản xuất, y tế, tài chính đến đời sống hàng ngày."}'
       ></a-sphere>
       <a-sphere
         id="hotspot4-2"
-        position="0 -2 15"
-        radius="0.5"
+        position="-16.5 5.7 15"
+        radius="0.6"
         color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "CMCN 3.0 - Sản Xuất", "content": "1. Xuất hiện máy tính, robot công nghiệp, internet, công nghệ bán dẫn.<br><br>2. Tự động hóa sản xuất, điều khiển số (NC, CNC).<br><br>3. Xã hội chuyển sang kỷ nguyên thông tin."}'
-      ></a-sphere>
-
-      <!-- Giai đoạn 5: Cách mạng Công nghiệp 4.0 (120°) -->
-      <a-sphere
-        id="hotspot5-1"
-        position="-29 10 15"
-        radius="1"
-        color="#FF6B6B"
-        opacity="0.8"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
-        class="hotspot clickable"
-        data-info='{"title": "CMCN 4.0 - Triết Học", "content": "1. Xuất hiện triết học hậu nhân loại (Posthumanism) – bàn về vai trò con người trong thế giới công nghệ.<br><br>2. Triết học công nghệ: bàn về đạo đức AI, quyền riêng tư, dữ liệu.<br><br>3. Nhà tư tưởng tiêu biểu: Nick Bostrom (triết học AI, siêu trí tuệ).<br><br>4. Sự kiện: bùng nổ mạng xã hội, kinh tế số, tranh luận về AI Ethics."}'
-      ></a-sphere>
-      <a-sphere
-        id="hotspot5-2"
-        position="-29 -6 15"
-        radius="1"
-        color="#4ECDC4"
-        opacity="0.8"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
-        class="hotspot clickable"
-        data-info='{"title": "CMCN 4.0 - Sản Xuất", "content": "1. Internet vạn vật (IoT), Big Data, Cloud computing.<br><br>2. Nhà máy thông minh, kết nối mọi thứ trong hệ sinh thái số.<br><br>3. Cá nhân hóa sản xuất, dịch vụ số, công nghệ sinh học phát triển."}'
+        data-info='{"title": "CMCN 4.0", "content": "Chuyển đổi số: Thể hiện quá trình số hóa toàn diện, bao trùm từ dữ liệu, dịch vụ đến mọi hoạt động xã hội. Đây là sự kết nối thông minh thông qua IoT, điện toán đám mây, Big Data và công nghệ 5G, mở ra kỷ nguyên nơi các hệ thống, doanh nghiệp và con người liên thông chặt chẽ trong một không gian số hóa toàn cầu."}'
       ></a-sphere>
 
       <!-- Giai đoạn 6: Kỷ nguyên AI (150°) -->
       <a-sphere
         id="hotspot6-1"
-        position="-20 7.5 -11.5"
-        radius="0.8"
-        color="#FF6B6B"
-        opacity="0.8"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
-        class="hotspot clickable"
-        data-info='{"title": "Kỷ Nguyên AI - Triết Học", "content": "1. Triết học AI: bàn về ý thức máy móc, “AI có linh hồn hay không?”.<br><br>2. Chủ nghĩa hậu nhân loại (Transhumanism): con người và máy hòa nhập.<br><br>3. Triết gia & nhà tư tưởng: Ray Kurzweil (singularity), Yuval Noah Harari (Homo Deus).<br><br>4. Sự kiện nổi bật tương lai: AI đạt siêu trí tuệ, tranh luận về quyền của robot, quan hệ người – máy."}'
-      ></a-sphere>
-      <a-sphere
-        id="hotspot6-2"
-        position="-20 -3.5 -11.5"
-        radius="0.8"
+        position="-37 13 -11.5"
+        radius="1.2"
         color="#4ECDC4"
         opacity="0.8"
         animation="property: rotation; to: 0 360 0; loop: true; dur: 3000"
         class="hotspot clickable"
-        data-info='{"title": "Kỷ Nguyên AI - Sản Xuất", "content": "1. Trí tuệ nhân tạo tổng quát (AGI), robot có khả năng học hỏi, sáng tạo.<br><br>2. Xã hội hậu công nghiệp, có thể áp dụng UBI (thu nhập cơ bản phổ quát).<br><br>3. Con người tập trung vào sáng tạo, phát triển tinh thần và tri thức."}'
+        data-info='{"title": "Mâu Thuẫn mới đang nảy sinh", "content": "Mâu thuẫn về lao động: Tự động hóa và AI có nguy cơ thay thế hàng loạt lao động, tạo ra sự phân hóa sâu sắc giữa người sở hữu công nghệ và người lao động.<br><br>Mâu thuẫn về sở hữu: Ai sở hữu dữ liệu - \"nguồn dầu mỏ mới\" của nền kinh tế? Các tập đoàn công nghệ khổng lồ đang nắm giữ và thu lợi từ dữ liệu của toàn xã hội.<br><br>Mâu thuẫn về phân phối: Sự giàu có được tạo ra bởi công nghệ ngày càng tập trung vào một nhóm rất nhỏ, làm gia tăng bất bình đẳng trên phạm vi toàn cầu."}'
       ></a-sphere>
 
       <!-- Camera với cursor để click và zoom -->
